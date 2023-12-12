@@ -40,10 +40,6 @@ df_merged = None
 
 for file in files[:2]:
     df = pd.read_csv(f'data/{file}')
-    # print()
-    # print(file)
-    # print(df.shape)
-    # print(df.describe())
     if df_merged is None:
         df_merged = df
     else:
