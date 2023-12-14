@@ -4,6 +4,10 @@ import numpy as np
 import geopandas as gpd
 import plotly.express as px
 import json
+from sklearn.metrics import r2_score
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.tree import plot_tree
+from sklearn.model_selection import KFold
 
 
 geodf = gpd.read_file("data_grazing/Adminstrative_shape_file/Sum.shp")
@@ -33,11 +37,11 @@ print(df_bio.columns)
 
 
 df_mine = df_mine.sort_values(by='year')
-print(df_mine["year"])
-df_mine = df_mine.loc[(df_mine["year"]>=2007) & (df_mine["year"]<=2020)].reset_index(drop=True)
+df_mine = df_mine.loc[(df_mine["year"]>=2018) & (df_mine["year"]<=2020)].reset_index(drop=True)
 
 
 fig = px.choropleth_mapbox(df_mine,
+                           hover_data = "AREA_M2",
                            geojson=geodf.geometry,
                            locations='AS_code',
                            center={"lat": 47.20900020640241, "lon": 102.8187267977119},
@@ -45,9 +49,11 @@ fig = px.choropleth_mapbox(df_mine,
                            color_continuous_scale="brwnyl", color_discrete_sequence=["fuchsia"],
                            zoom=5.2, animation_frame="year")
 
-fig2 = px.scatter_geo(df_bio, lat="latitude", lon="longitude",
+fig2 = px.scatter_geo(df_bio,
+                      lat="latitude",
+                      lon="longitude",
                       size="biomass",
-                      hover_name="plotname_mng",
+                      hover_name="AS_code",
                       color_continuous_scale="Cividis",
                       animation_frame='year',
                       opacity = 0.8,
