@@ -5,20 +5,16 @@ import geopandas as gpd
 import plotly.express as px
 import json
 
-def intersection(lst1, lst2):
-    lst3 = [value for value in lst1 if value in lst2]
-    return lst3
 
-
-geodf = gpd.read_file("data/map/Adminstrative_shape_file/Sum.shp")
+geodf = gpd.read_file("data_grazing/Adminstrative_shape_file/Sum.shp")
 geodf = geodf.to_crs("WGS84").set_index("AS_code")
 print(geodf.columns)
 
 
-df_mine = pd.read_stata("data/viz/mineral_lic.dta")
+df_mine = pd.read_stata("data_grazing/mineral_lic.dta")
 print(df_mine.columns)
 
-df_bio = pd.read_excel("data/viz/biomass_long.xlsx")
+df_bio = pd.read_excel("data_grazing/biomass_long.xlsx")
 df_bio['biomass'] = df_bio['biomass'].fillna(0)
 df_bio['biomass'] = df_bio['biomass'].astype('float16')
 df_bio['AS_code'] = df_bio['aimagcode']*100+df_bio['soumcode']
